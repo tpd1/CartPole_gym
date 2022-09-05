@@ -5,17 +5,6 @@ import time
 import matplotlib.pyplot as plt
 
 
-def setup_env():
-    env = gym.make("CartPole-v1")
-    env.reset()
-    for _ in range(100):
-        env.render()  # Render on the screen
-        action = env.action_space.sample()  # chose a random action
-        env.step(action)  # Perform random action on the environment
-        time.sleep(0.01)
-    env.close()
-
-
 def create_bins(num_bins_per_action=10):
     bins_cart_pos = np.linspace(-4.8, 4.8, num_bins_per_action)
     bins_cart_velocity = np.linspace(-5, 5, num_bins_per_action)
@@ -36,4 +25,14 @@ def discretize_observation(observations, bins):
         binned_observations.append(discretized_observation)
     return tuple(binned_observations)  # Important for later indexing
 
-# setup_env()
+
+def create_env():
+    env = gym.make("CartPole-v1", render_mode='human')
+    q_table_shape = (NUM_BINS, NUM_BINS, NUM_BINS, NUM_BINS, env.action_space.n) # setup_env()
+    q_table = np.zeros(q_table_shape)
+    print(q_table.shape)
+    env.reset()
+
+
+create_env()
+
